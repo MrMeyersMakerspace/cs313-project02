@@ -1,0 +1,247 @@
+﻿body {
+    background-color: #a3b9c9;
+    font-family: 'Dosis', sans-serif;
+    color: #1c2321;
+    margin: 0;
+}
+
+#pageName {
+    font-size: 32px;
+    font-weight: bold;
+    font-family: "Arial-black", sans-serif;
+    margin: 3px;
+    text-decoration: none;
+}
+
+hr {
+    margin: 20px;
+}
+
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+#content-wrap {
+    padding-bottom: 3.6rem;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 3.6rem;
+    overflow: hidden;
+    background-color: #7A918D;
+    color: black;
+}
+
+.footer-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ifoot {
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px;
+}
+
+.fa-instagram {
+    background: #fb3958;
+    color: white;
+    font-size: 25px !important;
+}
+
+.fa-github {
+    background: black;
+    color: white;
+    font-size: 25px !important;
+}
+
+header {
+    text-align: center;
+    overflow: hidden;
+    background-color: #1c2321;
+    padding: 20px 10px;
+    color: #f4f4f9
+}
+
+header a {
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 16px;
+    border-radius: 4px;
+}
+
+header a:hover {
+    background-color: #e7ecef;
+    color: black;
+}
+
+header a.active {
+    background-color: #7a918d;
+    color: black;
+}
+
+.topnav .icon {
+    display: none;
+}
+
+a {
+    color: #e7ecef;
+}
+
+h1 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+p {
+    text-align: center;
+    font-size: 18px;
+}
+
+h3 {
+	  margin-left: 15%;
+    margin-right: 15%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.error {
+	color: red;
+}
+
+.image {
+    position: relative;
+}
+
+.caption {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+    font-size: 12px;
+    color: white;
+}
+
+ul {
+    margin-left: 15%;
+    margin-right: 15%;
+    font-size: 18px;
+}
+
+#signup {
+    padding: 5px;
+    background-color: #1c2321;
+    border-radius: 10px;
+}
+
+#signup:hover {
+    background-color: #e7ecef;
+    color: black;
+}
+
+#welcome {
+    font-size: 18px;
+    text-align: center;
+}
+
+.center {
+    text-align: center;
+}
+
+#error {
+    font-size: 18px;
+    color: red;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+}
+
+form {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+@media screen and (max-width: 850px) {
+    header a {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .topnav a {
+        float: left;
+        display: block;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    header {
+        padding: 0px;
+    }
+
+    p {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+		h3 {
+			margin-left: 5%;
+			margin-right: 5%;
+		}
+
+    ul {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    #pageName {
+        font-size: 20px;
+        background-color: #1c2321;
+        padding: 15px;
+        margin: 0px;
+
+    }
+
+    hr {
+        display: none;
+    }
+
+    .topnav a:not(.active) {
+        display: none;
+    }
+
+    .topnav a.icon {
+        float: right;
+        display: block;
+    }
+
+    .topnav.responsive {
+        position: relative;
+    }
+
+        .topnav.responsive .icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .topnav.responsive a {
+            float: none;
+            display: block;
+            text-align: left;
+        }
+}

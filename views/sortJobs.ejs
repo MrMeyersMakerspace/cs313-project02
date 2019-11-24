@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Get Print jobs</title>
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+</head>
+<body>
+    <p>Please click on a button to view the print jobs in the specified order.</p>
+    <form method="get" id="sortForm" name="sortForm" action="/sortPrintJob">
+        <input type="hidden" id="sortType" name="sortType" value="" />
+        <button type="button" onclick="sortFirst()">Sort By First Name</button>
+        <button type="button" onclick="sortLast()">Sort By Last Name</button>
+        <button type="button" onclick="sortPrint()">Sort By Print Name</button>
+    </form>
+	
+	<script>
+        function sortFirst() {
+            document.getElementById("sortType").value = "first";
+            document.getElementById("sortForm").submit();
+        }
+
+        function sortLast() {
+            document.getElementById("sortType").value = "last";
+            document.getElementById("sortForm").submit();
+        }
+
+        function sortPrint() {
+            document.getElementById("sortType").value = "print";
+            document.getElementById("sortForm").submit();
+        }
+	</script>
+</body>
+</html>
