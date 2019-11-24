@@ -1,0 +1,19 @@
+{
+  "name": "cs313-project02",
+  "version": "1.0.0",
+  "description": "3D Print Job Manager",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrMeyersMakerspace/cs313-project02.git"
+  },
+  "author": "John Meyers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrMeyersMakerspace/cs313-project02/issues"
+  },
+  "homepage": "https://github.com/MrMeyersMakerspace/cs313-project02#readme"
+}
