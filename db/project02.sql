@@ -92,3 +92,6 @@ INSERT INTO project02.color(color) VALUES ('Bronze');
 INSERT INTO project02.color(color) VALUES ('Cosmic Sparkle');
 
 INSERT INTO project02.users(username, hashedPassword) VALUES ('TestUser', 'TestPassword');
+
+INSERT INTO project02.printJob (jobID, firstName, lastName, printName, sourceID, useID, colorID, materialID, filename, driveURL, statusID, statusDate) VALUES ( 1, 'testFirst', 'testLast', 'demoPrint', 1, 1, 1, 1, 'testPrint.stl', 'http://drive.google.com', 1, '23 Nov 2019');
+INSERT INTO project02.printJob (jobID, firstName, lastName, printName, sourceID, useID, colorID, materialID, filename, driveURL, statusID, statusDate) VALUES ( 2, 'test2First', 'test2Last', 'demo2Print', 2, 2, 2, 2, 'test2Print.stl', 'http://drive.google.com', 2, '24 Nov 2019');
