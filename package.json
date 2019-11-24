@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/MrMeyersMakerspace/cs313-project02/issues"
   },
-  "homepage": "https://github.com/MrMeyersMakerspace/cs313-project02#readme"
+  "homepage": "https://github.com/MrMeyersMakerspace/cs313-project02#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
