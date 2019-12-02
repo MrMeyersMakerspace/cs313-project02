@@ -10,15 +10,30 @@
     <p>Please click on a button to view the print jobs in the specified order.</p>
     <form method="get" id="sortForm" name="sortForm" action="/sortPrintJob">
         <input type="hidden" id="sortType" name="sortType" value="" />
-        <button type="button" onclick="sortFirst()">Sort By First Name</button>
-        <button type="button" onclick="sortLast()">Sort By Last Name</button>
-        <button type="button" onclick="sortPrint()">Sort By Print Name</button>
+        <button type="button" onclick="sortJobs('first')">Sort By First Name</button>
+        <button type="button" onclick="sortJobs('last')">Sort By Last Name</button>
+        <button type="button" onclick="sortJobs('print')">Sort By Print Name</button>
+        <button type="button" onclick="sortJobs('status')">Sort By Print Status</button>
     </form>
 	
 	<script>
-        function sortFirst() {
-            document.getElementById("sortType").value = "first";
-            document.getElementById("sortForm").submit();
+        function sortJobs(type) {
+            var serverData;
+            var url = "/sortPrintJob?sortType=" + type;
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("Got response from server: ")
+                    console.log(this.reponseText);
+
+                    serverData = JSON.parse(this.responseText);
+                } else {
+                    console.log("Server request failed")
+                }
+            };
+            xhttp.open("GET", "/sortPrintJob", true)
+            xhttp.send();
         }
 
         function sortLast() {
