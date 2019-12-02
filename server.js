@@ -101,6 +101,6 @@ function getPrintJobsFromDb(sortType, callback) {
 
         console.log("Found DB result: " + JSON.stringify(result.rows));
 
-        callback(null, result.rows);
+        response.end(JSON.stringify(result.rows));
     });
 }
