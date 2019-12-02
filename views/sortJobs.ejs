@@ -21,6 +21,8 @@
             var serverData;
             var url = "/sortPrintJob?sortType=" + type;
 
+            console.log("URL: " + url);
+
             var xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
                 if (this.readyState == 4 && this.status == 200) {
