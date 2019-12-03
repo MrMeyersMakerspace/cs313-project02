@@ -102,6 +102,7 @@
                 } else {
                     numItems = 11;
                 }
+                var jobID = data[i].jobid;
 
                 // Check values in console
                 console.log("Firstname: " + first);
@@ -121,6 +122,25 @@
 
                 // Create new row
                 var row = myTable.insertRow();
+
+                // Change color via class depending on job status
+                switch (jobID) {
+                    case 1:
+                        row.className = "white";
+                        break;
+                    case 2:
+                        row.className = "lightyellow";
+                        break;
+                    case 3:
+                        row.className = "yellow";
+                        break;
+                    case 4:
+                        row.className = "green";
+                        break;
+                    case 5:
+                        row.className = "red";
+                        break;
+                }
                 row.className = "white";
 
                 // Add cells into new row

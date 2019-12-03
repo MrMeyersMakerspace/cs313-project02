@@ -15,30 +15,29 @@
 #printTable td, #printTable th {
     border: 2px solid black;
     padding: 8px;
-  }
-  
-  
-  #printTable tr:hover {opacity: 80%;}
-  
-  #printTable th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #ed6c21;
-  }
+}
 
-  .red {
-      background-color: red;
-  }
+#printTable tr:hover {opacity: 80%;}
 
-  .yellow {
-      background-color: yellow;
-  }
+#printTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #ed6c21;
+}
+.red {
+    background-color: red;
+}
+.yellow {
+    background-color: yellow;
+}
+.green {
+    background-color: green;
+}
+.lightyellow {
+ background-color: lightyellow;
+}
 
-  .green {
-      background-color: green;
-  }
-
-  .white {
-      background-color: white;
-  }
+.white {
+    background-color: white;
+}
