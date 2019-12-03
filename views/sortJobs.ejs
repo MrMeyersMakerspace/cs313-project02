@@ -56,9 +56,19 @@
             };
             xhttp.open("get", url, true)
             xhttp.send();
+
+            renderPrintJobs(serverData);
         }
 
-        renderPrintJobs
+        function renderPrintJobs(data) {
+            var myTable = document.getElementById("printTable");
+
+            for (var i = 0; i < data.length; i++) {
+                // Get row values
+                var first = data[i].firstName;
+                console.log(first);
+            }
+        }
     </script>
 </body>
 
