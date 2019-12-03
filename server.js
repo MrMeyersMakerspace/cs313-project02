@@ -89,7 +89,7 @@ function getPrintJobsFromDb(sortType, callback) {
             sql = "SELECT * FROM project02.printJob ORDER BY printName";
             break;
         case "status":
-            sql = "SELECT * FROM project02.printJob ORDER BY jobStatus";
+            sql = "SELECT * FROM project02.printJob ORDER BY status";
             break;
     }
 
