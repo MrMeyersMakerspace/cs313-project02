@@ -16,7 +16,8 @@
         <button type="button" onclick="getPrintJobs('print')">Sort By Print Name</button>
         <button type="button" onclick="getPrintJobs('status')">Sort By Print Status</button>
     </div>
-
+    <br>
+    <br>
     <table id="printTable">
         <tr>
             <th>First Name</th>
@@ -56,6 +57,8 @@
             xhttp.open("get", url, true)
             xhttp.send();
         }
+
+        renderPrintJobs
     </script>
 </body>
 
