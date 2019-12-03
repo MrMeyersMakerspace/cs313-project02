@@ -1,11 +1,13 @@
 ﻿<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8" />
     <title>Get Print jobs</title>
-    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
+
 <body>
     <p>Please click on a button to view the print jobs in the specified order.</p>
     <div id="sortButtons">
@@ -14,8 +16,24 @@
         <button type="button" onclick="getPrintJobs('print')">Sort By Print Name</button>
         <button type="button" onclick="getPrintJobs('status')">Sort By Print Status</button>
     </div>
-	
-	<script>
+
+    <table id="printTable">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Print Name</th>
+            <th>Print Source</th>
+            <th>Print Use</th>
+            <th>Print Color</th>
+            <th>Type of Plastic</th>
+            <th>Filename</th>
+            <th>Google Drive URL</th>
+            <th>Update Date</th>
+            <th>Error Message (if needed)</th>
+        </tr>
+    </table>
+
+    <script>
         function getPrintJobs(type) {
             var serverData;
             var url = "/sortPrintJobs?sortType=" + type;
@@ -38,6 +56,7 @@
             xhttp.open("get", url, true)
             xhttp.send();
         }
-	</script>
+    </script>
 </body>
+
 </html>
