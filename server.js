@@ -93,7 +93,13 @@ function getPrintJobsFromDb(sortType, callback) {
             break;
     }
 
-    var sql = `SELECT * FROM project02.printJob ORDER BY ${sortVar}`;
+    var sql = 
+    `SELECT
+        *
+    FROM 
+        project02.printJob
+    ORDER BY
+        ${sortVar}`;
 
     /*var sql = 
     `SELECT 
