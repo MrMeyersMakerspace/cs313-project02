@@ -1,10 +1,7 @@
-const express = require("express");
-const path = require("path");
-const PORT = process.env.PORT || 5000;
-
+var express = require("express");
 var app = express();
 
-app.use(express.static(path.join(__dirname + "public")));
+app.use(express.static("public"));
 
 app.set("views", "views");
 app.set("view engine", "ejs");
@@ -14,14 +11,16 @@ const { Pool } = require("pg");
 const connectionString = process.env.DATABASE_URL || "postgres://postgres:11235813@localhost:5432/project02"
 const pool = new Pool({ connectionString: connectionString });
 
+app.set("port", (process.env.PORT || 5000));
+
 app.get("/", (request, response) => response.render('sortJobs'));
 
 app.get("/getPrintJob/:jobid", getPrintJob);
 
 app.get("/sortPrintJob", sortPrintJob);
 
-app.listen(PORT, function () {
-    console.log("Now Listening for connections on port: ", PORT);
+app.listen(app.get("port"), function () {
+    console.log("Now Listening for connections on port: ", app.get("port"));
 });
 
 function sortPrintJob(request, response) {
