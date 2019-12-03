@@ -28,7 +28,7 @@ function sortPrintJobs(request, response) {
     console.log(sortType);
 
     getPrintJobsFromDb(sortType, function (error, result) {
-        if (error || result == null ) {
+        if (error || result == null) {
             response.status(500).json({ success: false, data: error });
         } else {
             console.log("Back from the getPrintJobsFromDb function with results: ", result);
@@ -87,6 +87,9 @@ function getPrintJobsFromDb(sortType, callback) {
             break;
         case "print":
             sql = "SELECT * FROM project02.printJob ORDER BY printName";
+            break;
+        case "status":
+            sql = "SELECT * FROM project02.printJob ORDER BY status";
             break;
     }
 

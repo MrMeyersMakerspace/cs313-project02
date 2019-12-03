@@ -8,7 +8,12 @@
 </head>
 <body>
     <p>Please click on a button to view the print jobs in the specified order.</p>
-    <button type="button" onclick="sortJobs('first')">Sort By First Name</button>
+    <div id="sortButtons">
+        <button type="button" onclick="sortJobs('first')">Sort By First Name</button>
+        <button type="button" onclick="sortJobs('last')">Sort By Last Name</button>
+        <button type="button" onclick="sortJobs('print')">Sort By Print Name</button>
+        <button type="button" onclick="sortJobs('status')">Sort By Print Status</button>
+    </div>
     <form method="get" id="sortForm" name="sortForm" action="/sortPrintJobs">
         <input type="hidden" id="sortType" name="sortType" value="" />
 
