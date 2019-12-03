@@ -89,7 +89,7 @@ function getPrintJobsFromDb(sortType, callback) {
             sortVar = "printName";
             break;
         case "status":
-            sortVar = "statusID";
+            sortVar = "js.statusID";
             break;
     }
 
