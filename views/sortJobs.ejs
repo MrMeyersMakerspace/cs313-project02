@@ -65,6 +65,7 @@
 
         function renderPrintJobs(data) {
             var myTable = document.getElementById("printTable");
+            var numItems;
 
             for (var i = 0; i < data.length; i++) {
                 // Get row values
@@ -81,10 +82,15 @@
                 var date = data[i].statusdate;
                 if (typeof data[i].errormessage !== 'undefined') {
                     var error = data[i].errormessage;
+                    numItems = 12;
+                } else {
+                    numItems = 11;
                 }
 
+                // Check values in console
                 console.log("Firstname: " + first);
                 console.log("Lastname: " + last);
+                console.log("Print Name: " + printname);
                 console.log("Source: " + source);
                 console.log("Print Use: " + use);
                 console.log("Color: " + color);
@@ -93,6 +99,44 @@
                 console.log("Google Drive URL: " + driveurl);
                 console.log("Job Status: " + status);
                 console.log("Data: " + date);
+                if (typeof data[i].errormessage !== 'undefined') {
+                    console.log("Error Message: " + error);
+                }
+
+                // Create new row
+                var row = myTable.insertRow();
+
+                // Add cells into new row
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                var cell6 = row.insertCell(5);
+                var cell7 = row.insertCell(6);
+                var cell8 = row.insertCell(7);
+                var cell9 = row.insertCell(8);
+                var cell10 = row.insertCell(9);
+                var cell11 = row.insertCell(10);
+                var cell12 = row.insertCell(11);
+
+                // Insert values into new cells
+                cell1.innerHTML = first;
+                cell2.innerHTML = last;
+                cell3.innerHTML = source;
+                cell4.innerHTML = printname;
+                cell5.innerHTML = use;
+                cell6.innerHTML = color;
+                cell7.innerHTML = material;
+                cell8.innerHTML = filename;
+                cell9.innerHTML = driveurl;
+                cell10.innerHTML = status;
+                cell11.innerHTML = date;
+                if (typeof data[i].errormessage !== 'undefined') {
+                    cell12.innerHTML = errormessage;
+                } else {
+                    cell12.innerHTML = "";
+                }
             }
         }
     </script>
