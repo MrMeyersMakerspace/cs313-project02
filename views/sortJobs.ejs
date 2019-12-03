@@ -68,6 +68,22 @@
             var myTable = document.getElementById("printTable");
             var numItems;
 
+            myTable.innerHTML = 
+            `<tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Print Name</th>
+                <th>Print Source</th>
+                <th>Print Use</th>
+                <th>Print Color</th>
+                <th>Type of Plastic</th>
+                <th>Filename</th>
+                <th>Google Drive URL</th>
+                <th>Job Status</th>
+                <th>Update Date</th>
+                <th>Error Message (if needed)</th>
+            </tr>`
+
             for (var i = 0; i < data.length; i++) {
                 // Get row values
                 var first = data[i].firstname;
