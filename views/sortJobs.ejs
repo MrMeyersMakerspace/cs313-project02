@@ -79,7 +79,7 @@
                 var driveurl = data[i].driveurl;
                 var status = data[i].jobstatus;
                 var date = data[i].statusdate;
-                if (isset(data[i].errormessage)) {
+                if (typeof data[i].errormessage !== 'undefined') {
                     var error = data[i].errormessage;
                 }
 
