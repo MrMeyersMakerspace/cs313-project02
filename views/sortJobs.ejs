@@ -34,7 +34,7 @@
             xhttp.onload = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     console.log("Got response from server: ")
-                    console.log(this.reponseText);
+                    console.log(this.reponse);
 
                     serverData = JSON.parse(this.responseText);
                     console.log(serverData);
