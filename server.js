@@ -131,36 +131,16 @@ function getPrintJobsFromDb(sortType, callback) {
         project02.printJob.useID = project02.printUse.useID
     ORDER BY ${sortVar}`;*/
 
-    var sql = `SELECT
-  firstName,
-  lastName,
-  printName,
-  modelSource,
-  printUse,
-  color,
-  printMaterial,
-  filename,
-  driveurl,
-  printStatus,
-  statusID,
-  statusDate,
-  errorMessage
-FROM
-  project02.printJob,
-  project02.color,
-  project02.jobStatus,
-  project02.modelSource,
-  project02.printMaterial,
-  project02.printUse
-WHERE
-  printJob.colorID = color.colorID,
-  printJob.statusID = jobStatus.statusID,
-  printJob.sourceID = modelSource.sourceID,
-  printJob.materialID = printMaterial.materialID,
-  printJob.useID = printUse.useID
-ORDER BY
-  ${sortVar};`
-    
+    var sql = 
+    `SELECT *
+    FROM project02.printJob pj
+    JOIN project02.color c ON pj.colorID = c.colorID
+    JOIN project02.jobStatus js ON pj.statusID = js.statusID
+    JOIN project02.modelSource ms ON pj.sourceID = ms.sourceID
+    JOIN project02.printMaterial pm ON pj.materialID = pm.materialID
+    JOIN project02.printUse pu ON pj.useID = pu.useID
+    ORDER BY ${sortVar}`;
+
 
     var params = [];
 
