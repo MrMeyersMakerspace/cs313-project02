@@ -75,52 +75,23 @@ function getPrintJobFromDb(jobid, callback) {
 
 function getPrintJobsFromDb(sortType, callback) {
     console.log("getPrintJobsFromDb called with sortType ", sortType);
-    var sortVar;
+    var sql;
 
     // Change order of values based on sort type
     switch (sortType) {
         case "first":
-            sortVar = "firstName";
+            sql = "SELECT * FROM project02.printJob ORDER BY firstName";
             break;
         case "last":
-            sortVar = "lastName";
+            sql = "SELECT * FROM project02.printJob ORDER BY lastName";
             break;
         case "print":
-            sortVar = "printName";
+            sql = "SELECT * FROM project02.printJob ORDER BY printName";
             break;
         case "status":
-            sortVar = "statusID";
+            sql = "SELECT * FROM project02.printJob ORDER BY statusID";
             break;
     }
-    var sql = 
-    `SELECT 
-        firstName,
-        lastName,
-        printName,
-        modelSource,
-        printUse,
-        color,
-        printMaterial,
-        filename,
-        driveurl,
-        printStatus,
-        statusID,
-        statusDate,
-        errorMessage
-    FROM
-        project02.printJob,
-        project02.color,
-        project02.jobStatus,
-        project02.modelSource,
-        project02.printMaterial,
-        project02.printUse 
-    WHERE
-        project02.printJob.colorID = project02.printSource.colorID,
-        project02.printJob.statusID = project02.jobStatus.statusID,
-        project02.printJob.sourceID = project02.modelSource.sourceID,
-        project02.printJob.materialID = project02.printMaterial.materialID,
-        project02.printJob.useID = project02.printUse.useID
-    ORDER BY ${sortVar}`;
 
     var params = [];
 
