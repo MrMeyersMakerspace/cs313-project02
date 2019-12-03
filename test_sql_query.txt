@@ -36,7 +36,7 @@
         project02.printMaterial,
         project02.printUse 
     WHERE
-        project02.printJob.colorID = project02.printSource.colorID,
+        project02.printJob.colorID = project02.color.colorID,
         project02.printJob.statusID = project02.jobStatus.statusID,
         project02.printJob.sourceID = project02.modelSource.sourceID,
         project02.printJob.materialID = project02.printMaterial.materialID,
