@@ -93,8 +93,9 @@ function getPrintJobsFromDb(sortType, callback) {
             break;
     }
 
-    //var sql = `SELECT * FROM project02.printJob ORDER BY ${sortVar}`;
-    var sql = 
+    var sql = `SELECT * FROM project02.printJob ORDER BY ${sortVar}`;
+
+    /*var sql = 
     `SELECT 
         firstName,
         lastName,
@@ -123,6 +124,7 @@ function getPrintJobsFromDb(sortType, callback) {
         project02.printJob.materialID = project02.printMaterial.materialID,
         project02.printJob.useID = project02.printUse.useID
     ORDER BY ${sortVar}`;
+    */
 
     var params = [];
 
