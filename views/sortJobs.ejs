@@ -26,7 +26,7 @@
 
             var xhttp = new XMLHttpRequest();
 
-            xhttp.onreadystatechange = function () {
+            xhttp.onload = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     console.log("Got response from server: ")
                     console.log(this.reponseText);
