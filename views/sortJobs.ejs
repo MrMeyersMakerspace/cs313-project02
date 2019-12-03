@@ -102,7 +102,7 @@
                 } else {
                     numItems = 11;
                 }
-                var jobID = data[i].jobid;
+                var statusID = Number(data[i].statusID);
 
                 // Check values in console
                 console.log("Firstname: " + first);
@@ -119,12 +119,13 @@
                 if (typeof data[i].errormessage !== 'undefined') {
                     console.log("Error Message: " + error);
                 }
+                console.log("StatusID: " + statusID);
 
                 // Create new row
                 var row = myTable.insertRow();
 
                 // Change color via class depending on job status
-                switch (jobID) {
+                switch (statusID) {
                     case 1:
                         row.className = "white";
                         break;
@@ -140,8 +141,11 @@
                     case 5:
                         row.className = "red";
                         break;
+                    default:
+                        console.log("SOMETHING BROKE IN SWITCH!")
+                        break;
                 }
-                row.className = "white";
+                
 
                 // Add cells into new row
                 var cell1 = row.insertCell(0);
