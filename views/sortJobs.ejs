@@ -60,7 +60,7 @@
             xhttp.open("get", url, true)
             xhttp.send();
 
-            
+
         }
 
         function renderPrintJobs(data) {
@@ -69,7 +69,30 @@
             for (var i = 0; i < data.length; i++) {
                 // Get row values
                 var first = data[i].firstname;
-                console.log(first);
+                var last = data[i].lastname;
+                var printname = data[i].printname;
+                var source = data[i].modelsource;
+                var use = data[i].printuse;
+                var color = data[i].color;
+                var material = data[i].printmaterial;
+                var filename = data[i].filename;
+                var driveurl = data[i].driveurl;
+                var status = data[i].jobstatus;
+                var date = data[i].statusdate;
+                if (isset(data[i].errormessage)) {
+                    var error = data[i].errormessage);
+                }
+
+                console.log("Firstname: " + first);
+                console.log("Lastname: " + last); var printname = data[i].printname;
+                console.log("Source: " + source);
+                console.log("Print Use: " + use);
+                console.log("Color: " + color);
+                console.log("Firstname: " + material);
+                console.log("Filename: " + filename);
+                console.log("Google Drive URL: " + driveurl);
+                console.log("Job Status: " + status);
+                console.log("Data: " + date);
             }
         }
     </script>
