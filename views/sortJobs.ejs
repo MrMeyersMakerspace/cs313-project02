@@ -9,21 +9,14 @@
 <body>
     <p>Please click on a button to view the print jobs in the specified order.</p>
     <div id="sortButtons">
-        <button type="button" onclick="sortJobs('first')">Sort By First Name</button>
-        <button type="button" onclick="sortJobs('last')">Sort By Last Name</button>
-        <button type="button" onclick="sortJobs('print')">Sort By Print Name</button>
-        <button type="button" onclick="sortJobs('status')">Sort By Print Status</button>
+        <button type="button" onclick="getPrintJobs('first')">Sort By First Name</button>
+        <button type="button" onclick="getPrintJobs('last')">Sort By Last Name</button>
+        <button type="button" onclick="getPrintJobs('print')">Sort By Print Name</button>
+        <button type="button" onclick="getPrintJobs('status')">Sort By Print Status</button>
     </div>
-    <p>Test to see if server is working with old queries</p>
-    <form method="get" id="sortForm" name="sortForm" action="/sortPrintJobs">
-        <input type="hidden" id="sortType" name="sortType" value="" />
-
-        <button type="button" onclick="sortLast()">Sort By Last Name</button>
-        <button type="button" onclick="sortPrint()">Sort By Print Name</button>
-    </form>
 	
 	<script>
-        function sortJobs(type) {
+        function getPrintJobs(type) {
             var serverData;
             var url = "/sortPrintJobs?sortType=" + type;
 
@@ -45,17 +38,6 @@
             xhttp.open("get", url, true)
             xhttp.send();
         }
-
-        function sortLast() {
-            document.getElementById("sortType").value = "last";
-            document.getElementById("sortForm").submit();
-        }
-
-        function sortPrint() {
-            document.getElementById("sortType").value = "print";
-            document.getElementById("sortForm").submit();
-        }
-
 	</script>
 </body>
 </html>
