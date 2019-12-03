@@ -17,13 +17,13 @@ app.get("/", (request, response) => response.render('sortJobs'));
 
 app.get("/getPrintJob/:jobid", getPrintJob);
 
-app.get("/sortPrintJob", sortPrintJob);
+app.get("/sortPrintJobs", sortPrintJobs);
 
 app.listen(app.get("port"), function () {
     console.log("Now Listening for connections on port: ", app.get("port"));
 });
 
-function sortPrintJob(request, response) {
+function sortPrintJobs(request, response) {
     var sortType = request.query.sortType;
     console.log(sortType);
 
@@ -101,6 +101,6 @@ function getPrintJobsFromDb(sortType, callback) {
 
         console.log("Found DB result: " + JSON.stringify(result.rows));
 
-        response.end(JSON.stringify(result.rows));
+        callback(null, result.rows);
     });
 }
