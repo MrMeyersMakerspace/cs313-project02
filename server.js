@@ -15,6 +15,34 @@ app.set("port", (process.env.PORT || 5000));
 
 app.get("/admin", (request, response) => response.render('sortJobs'));
 
+// Because we will be using post values, we need to use the body parser middleware
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
+
+// Login Testing
+app.get("/adminLogin", (request, response) => response.render('adminLogin'));
+
+// Main print job submission page
+app.get("/", (request, response) => response.render('submitPrintJob'));
+
+// Successful print submission page
+app.get("/success", (request, response) => response.render('success'));
+
+// Gets options for print job submission page via AJAX
+app.get("/getOptions", getOptions);
+
+// User submits a print job
+app.post("/submitPrintJob", submitPrintJob);
+
+app.get("/getPrintJob/:jobid", getPrintJob);
+
+app.get("/sortPrintJobs", sortPrintJobs);
+
+app.listen(app.get("port"), function () {
+    console.log("Now Listening for connections on port: ", app.get("port"));
+});
+
+
 ///////////////////////////////////////
 
 /*
@@ -29,34 +57,9 @@ app.use(session({
 }))
 */
 
-// Because we will be using post values, we need to use the body parser middleware
-app.use(express.json());       // to support JSON-encoded bodies
-app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
-
-//Login Testing
-app.get("/adminLogin", (request, response) => response.render('adminLogin'));
-
-app.get("/", (request, response) => response.render('submitPrintJob'));
-
-app.get("/getOptions", getOptions);
-
 // Setup our routes
 app.post('/login', handleLogin);
 app.post('/logout', handleLogout);
-
-
-
-///////////////////////////////////////////////////////////
-
-app.get("/getPrintJob/:jobid", getPrintJob);
-
-app.get("/sortPrintJobs", sortPrintJobs);
-
-app.listen(app.get("port"), function () {
-    console.log("Now Listening for connections on port: ", app.get("port"));
-});
-
-//////////////////////////////////////////
 
 // Checks if the username and password match a hardcoded set
 // If they do, put the username on the session
@@ -113,8 +116,84 @@ function verifyLogin(request, response, next) {
     */
 }
 
-
 //////////////////////////////////////////
+
+function submitPrintJob(request, response) {
+    console.log("Submitting print job");
+
+    var first = request.body.firstname;
+    var last = request.body.lastname;
+    var printname = request.body.printname;
+    var source = Number(request.body.source);
+    var use = Number(request.body.use);
+    var color = Number(request.body.color);
+    var material = Number(request.body.type);
+    var filename = request.body.filename;
+    var driveurl = request.body.url;
+    var status = 1;
+    // Get Current Date
+    var timestamp = Date.now();
+    var date_ob = new Date(timestamp);
+    var day = date_ob.getDate();
+    var month = date_ob.getMonth() + 1;
+    var year = date_ob.getFullYear();
+    var date = day + "-" + month + "-" + year;
+
+
+    // Check values in console
+    console.log("Firstname: " + first);
+    console.log("Lastname: " + last);
+    console.log("Print Name: " + printname);
+    console.log("Source: " + source);
+    console.log("Print Use: " + use);
+    console.log("Color: " + color);
+    console.log("Material: " + material);
+    console.log("Filename: " + filename);
+    console.log("Google Drive URL: " + driveurl);
+    console.log("Job Status: " + status);
+    console.log("Date: " + date);
+
+
+
+
+    var sql =
+    `INSERT INTO project02.printjob 
+        (   firstname,
+            lastname,
+            printname,
+            sourceid,
+            useid,
+            colorid,
+            materialid,
+            filename,
+            driveurl,
+            statusid,
+            statusdate  )
+    VALUES
+        (   ${first},
+            ${last},
+            ${printname},
+            ${source},
+            ${use},
+            ${color},
+            ${material},
+            ${filename},
+            ${driveurl},
+            ${status},
+            ${date})`;
+
+    pool.query(sql, (error, result) => {
+        if (error) {
+            console.log("An error with the DB occurred");
+            console.log(error);
+        }
+
+        console.log("Values Entered Successfully");
+
+        response.redirect("/success");
+    });
+
+}
 
 function sortPrintJobs(request, response) {
     var sortType = request.query.sortType;
@@ -188,7 +267,7 @@ function getOptions(request, response) {
             sql = 'SELECT * FROM project02.printmaterial';
             break;
     }
-    
+
     var params = [];
 
     pool.query(sql, params, function (error, result) {

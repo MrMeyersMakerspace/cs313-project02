@@ -14,7 +14,7 @@
     <p style="color: #ed6c21;">Please upload your file to your Google Drive and then fill out the form below to submit
         your model for 3D printing by Maker Meyers.</p>
     <hr>
-    <form method="get" id="printJobForm" name="printJobForm" action="/submitPrintJob">
+    <form method="post" id="printJobForm" name="printJobForm" action="/submitPrintJob">
         <div class="formInput">
             <label>First Name: </label>
             <input type="text" id="firstname" name="firstname" placeholder="First Name" required>
@@ -130,7 +130,7 @@
             }
 
             // set value property of opt
-            opt.value = i;
+            opt.value = i + 1;
 
             // add opt to end of select box (sel)
             sel.appendChild(opt);
