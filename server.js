@@ -170,17 +170,17 @@ function submitPrintJob(request, response) {
             statusid,
             statusdate  )
     VALUES
-        (   ${first},
-            ${last},
-            ${printname},
-            ${source},
-            ${use},
-            ${color},
-            ${material},
-            ${filename},
-            ${driveurl},
-            ${status},
-            ${date})`;
+        (   '${first}',
+            '${last}',
+            '${printname}',
+            '${source}',
+            '${use}',
+            '${color}',
+            '${material}',
+            '${filename}',
+            '${driveurl}',
+            '${status}',
+            '${date}')`;
 
     pool.query(sql, (error, result) => {
         if (error) {
