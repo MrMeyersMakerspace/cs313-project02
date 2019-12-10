@@ -54,6 +54,180 @@
         <br>
         <button type="submit">Submit Print Job</button>
     </form>
+    <br>
+    <br>
+    <hr>
+    <br>
+
+    <h2 style="color: #ed6c21;">Check Print Status</h2>
+    <p style="color: #ed6c21;">To check the status of your 3D print click on one of the buttons below to view current print jobs. They are color
+        coded by status. White means it is submitted, light yellow is sliced, yellow is currently printing, green means
+        print is complete, and red means there is some sort of error (check the error message).</p>
+    <div id="sortButtons">
+        <button type="button" onclick="getPrintJobs('first')">Sort By First Name</button>
+        <button type="button" onclick="getPrintJobs('last')">Sort By Last Name</button>
+        <button type="button" onclick="getPrintJobs('print')">Sort By Print Name</button>
+        <button type="button" onclick="getPrintJobs('status')">Sort By Print Status</button>
+    </div>
+    <br>
+    <br>
+    <table id="printTable">
+
+    </table>
+
+    <script>
+        function getPrintJobs(type) {
+            var serverData;
+            var url = "/sortPrintJobs?sortType=" + type;
+
+            console.log("URL: " + url);
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onload = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("Got response from server: ")
+                    console.log(this.reponse);
+
+                    serverData = JSON.parse(this.responseText);
+
+                    console.log(serverData);
+
+                    renderPrintJobs(serverData);
+                } else {
+                    console.log("Server request failed")
+                }
+            };
+            xhttp.open("get", url, true)
+            xhttp.send();
+
+
+        }
+
+        function renderPrintJobs(data) {
+            var myTable = document.getElementById("printTable");
+            var numItems;
+
+            myTable.innerHTML = `<tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Print Name</th>
+                <th>Print Source</th>
+                <th>Print Use</th>
+                <th>Print Color</th>
+                <th>Type of Plastic</th>
+                <th>Filename</th>
+                <th>Google Drive URL</th>
+                <th>Job Status</th>
+                <th>Update Date</th>
+                <th>Error Message (if needed)</th>
+            </tr>`;
+
+            for (var i = 0; i < data.length; i++) {
+                // Get row values
+                var first = data[i].firstname;
+                var last = data[i].lastname;
+                var printname = data[i].printname;
+                var source = data[i].modelsource;
+                var use = data[i].printuse;
+                var color = data[i].color;
+                var material = data[i].printmaterial;
+                var filename = data[i].filename;
+                var driveurl = data[i].driveurl;
+                var status = data[i].jobstatus;
+                var date = data[i].statusdate;
+                if (typeof data[i].errormessage !== 'undefined') {
+                    var error = data[i].errormessage;
+                    numItems = 12;
+                } else {
+                    numItems = 11;
+                }
+                var statusID = Number(data[i].statusid);
+
+                // Check values in console
+                console.log("Firstname: " + first);
+                console.log("Lastname: " + last);
+                console.log("Print Name: " + printname);
+                console.log("Source: " + source);
+                console.log("Print Use: " + use);
+                console.log("Color: " + color);
+                console.log("Firstname: " + material);
+                console.log("Filename: " + filename);
+                console.log("Google Drive URL: " + driveurl);
+                console.log("Job Status: " + status);
+                console.log("Data: " + date);
+                if (typeof data[i].errormessage !== 'undefined') {
+                    console.log("Error Message: " + error);
+                }
+                console.log("StatusID: " + statusID);
+
+                // Create new row
+                var row = myTable.insertRow();
+
+                // Change color via class depending on job status
+                switch (statusID) {
+                    case 1:
+                        row.className = "white";
+                        break;
+                    case 2:
+                        row.className = "lightyellow";
+                        break;
+                    case 3:
+                        row.className = "yellow";
+                        break;
+                    case 4:
+                        row.className = "green";
+                        break;
+                    case 5:
+                        row.className = "red";
+                        break;
+                    default:
+                        console.log("SOMETHING BROKE IN SWITCH!")
+                        break;
+                }
+
+
+                // Add cells into new row
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                var cell6 = row.insertCell(5);
+                var cell7 = row.insertCell(6);
+                var cell8 = row.insertCell(7);
+                var cell9 = row.insertCell(8);
+                var cell10 = row.insertCell(9);
+                var cell11 = row.insertCell(10);
+                var cell12 = row.insertCell(11);
+
+                // Insert values into new cells
+                cell1.innerHTML = first;
+                cell2.innerHTML = last;
+                cell3.innerHTML = printname;
+                cell4.innerHTML = source;
+                cell5.innerHTML = use;
+                cell6.innerHTML = color;
+                cell7.innerHTML = material;
+                cell8.innerHTML = filename;
+                cell9.innerHTML = driveurl;
+                cell10.innerHTML = status;
+                cell11.innerHTML = date;
+                if (typeof data[i].errormessage !== 'undefined') {
+                    cell12.innerHTML = error;
+                } else {
+                    cell12.innerHTML = "";
+                }
+            }
+        }
+    </script>
+
+
+
+
+
+
+
 
 
     <br>
