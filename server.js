@@ -13,7 +13,40 @@ const pool = new Pool({ connectionString: connectionString });
 
 app.set("port", (process.env.PORT || 5000));
 
-app.get("/", (request, response) => response.render('sortJobs'));
+app.get("/admin", (request, response) => response.render('sortJobs'));
+
+///////////////////////////////////////
+
+/*
+// We are going to use sessions
+var session = require('express-session')
+
+// set up sessions
+app.use(session({
+  secret: 'my-super-secret-secret!',
+  resave: false,
+  saveUninitialized: true
+}))
+*/
+
+// Because we will be using post values, we need to use the body parser middleware
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
+
+//Login Testing
+app.get("/adminLogin", (request, response) => response.render('adminLogin'));
+
+app.get("/", (request, response) => response.render('submitPrintJob'));
+
+app.get("/getOptions", getOptions);
+
+// Setup our routes
+app.post('/login', handleLogin);
+app.post('/logout', handleLogout);
+
+
+
+///////////////////////////////////////////////////////////
 
 app.get("/getPrintJob/:jobid", getPrintJob);
 
@@ -22,6 +55,66 @@ app.get("/sortPrintJobs", sortPrintJobs);
 app.listen(app.get("port"), function () {
     console.log("Now Listening for connections on port: ", app.get("port"));
 });
+
+//////////////////////////////////////////
+
+// Checks if the username and password match a hardcoded set
+// If they do, put the username on the session
+function handleLogin(request, response) {
+    var result = { success: true };
+
+    var username = request.body.username;
+    var password = request.body.password;
+
+    console.log("Username: " + username);
+    console.log("Password: " + password);
+    response.json(result);
+    // We should do better error checking here to make sure the parameters are present
+    /*
+	if (request.body.username == "admin" && request.body.password == "password") {
+		request.session.user = request.body.username;
+		result = {success: true};
+	}
+
+    response.json(result);
+    */
+}
+
+// If a user is currently stored on the session, removes it
+function handleLogout(request, response) {
+    var result = { success: true };
+
+    /*
+	// We should do better error checking here to make sure the parameters are present
+	if (request.session.user) {
+		request.session.destroy();
+		result = {success: true};
+	}
+    */
+
+    response.json(result);
+}
+
+// This is a middleware function that we can use with any request
+// to make sure the user is logged in.
+function verifyLogin(request, response, next) {
+    /*
+    if (request.session.user) {
+		// They are logged in!
+
+		// pass things along to the next function
+		next();
+	} else {
+		// They are not logged in
+		// Send back an unauthorized status
+		var result = {success:false, message: "Access Denied"};
+		response.status(401).json(result);
+    }
+    */
+}
+
+
+//////////////////////////////////////////
 
 function sortPrintJobs(request, response) {
     var sortType = request.query.sortType;
@@ -73,6 +166,45 @@ function getPrintJobFromDb(jobid, callback) {
     });
 }
 
+function getOptions(request, response) {
+    console.log("Getting table options");
+
+    var table = request.query.table;
+    var sql;
+    console.log("Retrieving table info from table: ", table);
+
+
+    switch (table) {
+        case "source":
+            sql = 'SELECT * FROM project02.modelsource';
+            break;
+        case "use":
+            sql = 'SELECT * FROM project02.printuse';
+            break;
+        case "color":
+            sql = 'SELECT * FROM project02.color';
+            break;
+        case "type":
+            sql = 'SELECT * FROM project02.printmaterial';
+            break;
+    }
+    
+    var params = [];
+
+    pool.query(sql, params, function (error, result) {
+        if (error) {
+            console.log("An error with the DB occurred");
+            console.log(error);
+            callback(error, null);
+        }
+
+        console.log("Found DB result: " + JSON.stringify(result.rows));
+
+        response.json(result.rows);
+    });
+
+}
+
 function getPrintJobsFromDb(sortType, callback) {
     console.log("getPrintJobsFromDb called with sortType ", sortType);
     var sortVar;
@@ -93,8 +225,8 @@ function getPrintJobsFromDb(sortType, callback) {
             break;
     }
 
-    var sql = 
-    `SELECT *
+    var sql =
+        `SELECT *
     FROM project02.printJob pj
     JOIN project02.color c ON pj.colorID = c.colorID
     JOIN project02.jobStatus js ON pj.statusID = js.statusID

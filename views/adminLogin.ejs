@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Login</title>
+</head>
+
+<body>
+    <h1>Admin Login</h1>
+    <div>
+        <input type="text" id="username" placeholder="username"><br>
+        <input type="password" id="password" placeholder="password"><br>
+        <button onclick="login();">Log in</button>
+        <button onclick="logout();">Log out</button><br>
+        <div id="status"></div>
+    </div>
+
+    <script>
+
+        function login() {
+            var username = $("#username").val();
+            var password = $("#password").val();
+
+            var params = {
+                username: username,
+                password: password
+            };
+
+            $.post("/login", params, function (result) {
+                if (result && result.success) {
+                    $("#status").text("Successfully logged in.");
+                } else {
+                    $("#status").text("Error logging in.");
+                }
+            });
+        }
+
+        function logout() {
+            $.post("/logout", function (result) {
+                if (result && result.success) {
+                    $("#status").text("Successfully logged out.");
+                } else {
+                    $("#status").text("Error logging out.");
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

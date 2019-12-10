@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>ThinkLab 3D Print Job Submission</title>
+</head>
+
+<body onload="startFill()">
+    <h1 style="color: #ed6c21;">ThinkLab 3D Print Job Submission Page</h1>
+    <p style="color: #ed6c21;">Please upload your file to your Google Drive and then fill out the form below to submit
+        your model for 3D printing by Maker Meyers.</p>
+    <hr>
+    <form method="get" id="printJobForm" name="printJobForm" action="/submitPrintJob">
+        <div class="formInput">
+            <label>First Name: </label>
+            <input type="text" id="firstname" name="firstname" placeholder="First Name" required>
+        </div>
+        <div class="formInput">
+            <label>Last Name: </label>
+            <input type="text" id="lastname" name="lastname" placeholder="Last Name" required>
+        </div>
+        <div class="formInput">
+            <label>Name of Print: </label>
+            <input type="text" id="printname" name="printname" placeholder="Name of Print" required>
+        </div>
+        <div class="formInput">
+            <label>Select the source of the file: </label>
+            <select id="source" name="source" required></select>
+        </div>
+        <div class="formInput">
+            <label>Select how the print will be used: </label>
+            <select id="use" name="use" required></select>
+        </div>
+        <div class="formInput">
+            <label>Select the desired filament color: </label>
+            <select id="color" name="color" required></select>
+        </div>
+        <div class="formInput">
+            <label>Select type of plastic: </label>
+            <select id="type" name="type" required></select>
+        </div>
+        <div class="formInput">
+            <label>Filename of 3D model (.stl file): </label>
+            <input type="text" size="50" id="filename" name="filename" placeholder="Filename" required>
+        </div>
+        <div class="formInput">
+            <label>Link to file on Google Drive: </label>
+            <input type="text" size="100" id="url" name="url" placeholder="Google Drive URL" required>
+        </div>
+        <br>
+        <button type="submit">Submit Print Job</button>
+    </form>
+
+
+    <script>
+        // Calls all required functions to fill data
+        function startFill() {
+            getServerValues('source');
+            getServerValues('use');
+            getServerValues('color');
+            getServerValues('type');
+        }
+
+        // Gets values from server for specific table
+        function getServerValues(table) {
+            var serverData;
+            var url = "/getOptions?table=" + table;
+
+            console.log("URL: " + url);
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onload = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("Got response from server: ")
+                    console.log(this.reponse);
+
+                    serverData = JSON.parse(this.responseText);
+
+                    console.log(serverData);
+
+                    loadValues(serverData, table);
+                } else {
+                    console.log("Server request failed")
+                }
+            };
+            xhttp.open("get", url, true)
+            xhttp.send();
+        }
+
+        // Get options from the server and set select statements to have those options
+        function loadValues(data, table) {
+            // Load Table Values Into Form
+            var sourceDOM = document.getElementById(table);
+            for (var i = 0; i < data.length; i++) {
+                addOptions(i, data, sourceDOM, table);
+            }
+        }
+
+        // Adds options into the select from passed server data
+        function addOptions(i, options, sel, table) {
+            // create new option element
+            var opt = document.createElement('option');
+
+            // create text node to add to option element (opt) depending on table
+            switch (table) {
+                case "source":
+                    opt.appendChild(document.createTextNode(options[i].modelsource));
+                    break;
+                case "use":
+                    opt.appendChild(document.createTextNode(options[i].printuse));
+                    break;
+                case "color":
+                    opt.appendChild(document.createTextNode(options[i].color));
+                    break;
+                case "type":
+                    opt.appendChild(document.createTextNode(options[i].printmaterial));
+                    break;
+            }
+
+            // set value property of opt
+            opt.value = i;
+
+            // add opt to end of select box (sel)
+            sel.appendChild(opt);
+        }
+    </script>
+
+</body>
+
+</html>

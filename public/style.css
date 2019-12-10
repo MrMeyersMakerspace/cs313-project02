@@ -20,10 +20,10 @@
 #printTable tr:hover {opacity: 80%;}
 
 #printTable th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #ed6c21;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #ed6c21;
 }
 .red {
     background-color: red;
@@ -35,9 +35,13 @@
     background-color: green;
 }
 .lightyellow {
- background-color: lightyellow;
+	background-color: lightyellow;
 }
 
 .white {
     background-color: white;
+}
+
+.formInput {
+	padding-top: 10px;
 }
