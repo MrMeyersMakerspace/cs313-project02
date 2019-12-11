@@ -16,6 +16,23 @@
         <button type="button" onclick="getPrintJobs('print')">Sort By Print Name</button>
         <button type="button" onclick="getPrintJobs('status')">Sort By Print Status</button>
     </div>
+
+    <!--Model for updating status-->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Please select the new status for the print job</p>
+            <select id="newStatus" name="newStatus">
+                <option value=1>Print job submitted</option>
+                <option value=2>Model sliced</option>
+                <option value=3>Model printing</option>
+                <option value=4>Model printed and ready for pickup</option>
+                <option value=5>Problem with model, fix and resubmit</option>
+            </select>
+            <button type="button" onclick="sendUpdate()">Update Print Job</button>
+        </div>
+
+    </div>
     <br>
     <br>
     <table id="printTable">
@@ -145,7 +162,7 @@
                         console.log("SOMETHING BROKE IN SWITCH!")
                         break;
                 }
-                
+
 
                 // Add cells into new row
                 var cell1 = row.insertCell(0);
@@ -171,7 +188,7 @@
                 cell7.innerHTML = material;
                 cell8.innerHTML = filename;
                 cell9.innerHTML = driveurl;
-                cell10.innerHTML = status;
+                cell10.innerHTML = `<button type="button" onclick="updateStatus(${i})">${status}</button>`;
                 cell11.innerHTML = date;
                 if (typeof data[i].errormessage !== 'undefined') {
                     cell12.innerHTML = error;
@@ -179,6 +196,39 @@
                     cell12.innerHTML = "";
                 }
             }
+        }
+
+        function updateStatus(i) {
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            modal.style.display = "block";
+
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        function sendUpdate() {
+            // AJAX request to update the status of the selected print job
+            alert("AJAX request to update status is a work in progress");
+
+            // Close modal
+            document.getElementById("myModal").style.display = "none";
         }
     </script>
 </body>
