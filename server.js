@@ -31,21 +31,29 @@ app.get("/success", (request, response) => response.render('success'));
 // Gets options for print job submission page via AJAX
 app.get("/getOptions", getOptions);
 
+// Updates the status of the print job
+app.get("/updateStatus", updateStatus);
+
 // User submits a print job
 app.post("/submitPrintJob", submitPrintJob);
 
+// Gets a specific print job based off of jobid
 app.get("/getPrintJob/:jobid", getPrintJob);
 
+// Gets all print jobs sorted in a specified order
 app.get("/sortPrintJobs", sortPrintJobs);
 
 app.listen(app.get("port"), function () {
     console.log("Now Listening for connections on port: ", app.get("port"));
 });
 
-
 ///////////////////////////////////////
-
+///////////////////////////////////////
+///////////////////////////////////////
+///////////////////////////////////////
 /*
+
+
 // We are going to use sessions
 var session = require('express-session')
 
@@ -55,7 +63,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
-*/
+
 
 // Setup our routes
 app.post('/login', handleLogin);
@@ -73,27 +81,27 @@ function handleLogin(request, response) {
     console.log("Password: " + password);
     response.json(result);
     // We should do better error checking here to make sure the parameters are present
-    /*
+    
 	if (request.body.username == "admin" && request.body.password == "password") {
 		request.session.user = request.body.username;
 		result = {success: true};
 	}
 
     response.json(result);
-    */
+    
 }
 
 // If a user is currently stored on the session, removes it
 function handleLogout(request, response) {
     var result = { success: true };
 
-    /*
+    
 	// We should do better error checking here to make sure the parameters are present
 	if (request.session.user) {
 		request.session.destroy();
 		result = {success: true};
 	}
-    */
+    
 
     response.json(result);
 }
@@ -101,7 +109,7 @@ function handleLogout(request, response) {
 // This is a middleware function that we can use with any request
 // to make sure the user is logged in.
 function verifyLogin(request, response, next) {
-    /*
+    
     if (request.session.user) {
 		// They are logged in!
 
@@ -113,11 +121,63 @@ function verifyLogin(request, response, next) {
 		var result = {success:false, message: "Access Denied"};
 		response.status(401).json(result);
     }
-    */
+    
 }
-
+*/
+//////////////////////////////////////////
+//////////////////////////////////////////
+//////////////////////////////////////////
 //////////////////////////////////////////
 
+// Updates the status job status on the server
+function updateStatus(request, response) {
+    // Get passed jobID and error comment
+    var updateID = request.query.updateID;
+    var newError = request.query.comment;
+    var newStatus = request.query.newStatus;
+
+    // Debug logs
+    console.log(`updateID = ${updateID}`);
+    console.log(`newError = ${newError}`);
+    console.log(`newStatus = ${newStatus}`);
+
+    var sql =
+        `UPDATE project02.printjob
+        SET statusid = ${newStatus}
+        WHERE jobid = ${updateID}`
+
+    pool.query(sql, (error, result) => {
+        if (error) {
+            console.log("An error with the DB occurred");
+            console.log(error);
+        }
+
+        console.log("Values Entered Successfully");
+    });
+
+    if (newError !== " ") {
+        console.log(`Going to add in the error message: ${newError}`)
+
+        var sql2 =
+            `UPDATE project02.printjob
+            SET errormessage = '${newError}'
+            WHERE jobid = ${updateID}`
+
+        pool.query(sql2, (error, result) => {
+            if (error) {
+                console.log("An error with the DB occurred");
+                console.log(error);
+            }
+
+            console.log("Values Entered Successfully");
+        });
+    }
+
+    // Redirect back to admin page
+    response.redirect("/admin");
+}
+
+// Creates a new row in the database for the new print job
 function submitPrintJob(request, response) {
     console.log("Submitting print job");
 
@@ -137,7 +197,7 @@ function submitPrintJob(request, response) {
     var day = date_ob.getDate();
     var month = date_ob.getMonth() + 1;
     var year = date_ob.getFullYear();
-    var date = day + "-" + month + "-" + year;
+    var date = month + "-" + day + "-" + year;
 
 
     // Check values in console
@@ -157,7 +217,7 @@ function submitPrintJob(request, response) {
 
 
     var sql =
-    `INSERT INTO project02.printjob 
+        `INSERT INTO project02.printjob 
         (   firstname,
             lastname,
             printname,
@@ -195,10 +255,12 @@ function submitPrintJob(request, response) {
 
 }
 
+// Returns back to the client the print jobs sorted as requested
 function sortPrintJobs(request, response) {
     var sortType = request.query.sortType;
     console.log(sortType);
 
+    // Calls function to actually get the print jobs from the server
     getPrintJobsFromDb(sortType, function (error, result) {
         if (error || result == null) {
             response.status(500).json({ success: false, data: error });
@@ -209,6 +271,7 @@ function sortPrintJobs(request, response) {
     });
 }
 
+// Gets a specific print job based off it's jobID
 function getPrintJob(request, response) {
     console.log("Getting print job ");
 
@@ -226,6 +289,7 @@ function getPrintJob(request, response) {
 
 }
 
+// Gets the specific print job from the database and passes it back
 function getPrintJobFromDb(jobid, callback) {
     console.log("getPersonFromDb called with id ", jobid);
 
@@ -245,6 +309,7 @@ function getPrintJobFromDb(jobid, callback) {
     });
 }
 
+// Gets the various options to be populated in the print job submission form
 function getOptions(request, response) {
     console.log("Getting table options");
 
@@ -284,6 +349,8 @@ function getOptions(request, response) {
 
 }
 
+// Sends a query to the database to get the print jobs in the order
+// specified when called and send it back
 function getPrintJobsFromDb(sortType, callback) {
     console.log("getPrintJobsFromDb called with sortType ", sortType);
     var sortVar;
@@ -301,6 +368,9 @@ function getPrintJobsFromDb(sortType, callback) {
             break;
         case "status":
             sortVar = "js.statusID";
+            break;
+        case "color":
+            sortVar = "color";
             break;
     }
 

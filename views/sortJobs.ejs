@@ -8,13 +8,14 @@
     <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
-<body>
+<body onload="loadPrintJobs()">
     <p>Please click on a button to view the print jobs in the specified order.</p>
     <div id="sortButtons">
         <button type="button" onclick="getPrintJobs('first')">Sort By First Name</button>
         <button type="button" onclick="getPrintJobs('last')">Sort By Last Name</button>
         <button type="button" onclick="getPrintJobs('print')">Sort By Print Name</button>
         <button type="button" onclick="getPrintJobs('status')">Sort By Print Status</button>
+        <button type="button" onclick="getPrintJobs('color')">Sort By Color</button>
     </div>
 
     <!--Model for updating status-->
@@ -22,13 +23,18 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <p>Please select the new status for the print job</p>
-            <select id="newStatus" name="newStatus">
+            <select id="newStatus" name="newStatus" onchange="showTextBox(this)">
                 <option value=1>Print job submitted</option>
                 <option value=2>Model sliced</option>
                 <option value=3>Model printing</option>
                 <option value=4>Model printed and ready for pickup</option>
                 <option value=5>Problem with model, fix and resubmit</option>
             </select>
+            <br><br>
+            <div id="errorEntry">
+                <textarea id="newComment" name="newComment" placeholder="Enter Comment Here"></textarea>
+                <br><br>
+            </div>
             <button type="button" onclick="sendUpdate()">Update Print Job</button>
         </div>
 
@@ -48,13 +54,31 @@
             <th>Google Drive URL</th>
             <th>Job Status</th>
             <th>Update Date</th>
-            <th>Error Message (if needed)</th>
+            <th>Error Message</th>
         </tr>
     </table>
 
     <script>
+        var updateID;
+        var serverData;
+
+        // Loads previous sort type for print jobs
+        function loadPrintJobs() {
+            var typeOfSort = sessionStorage.getItem("typeOfSort");
+            if (typeOfSort !== null) {
+                console.log(`typeOfSort = ${typeOfSort} & Call to database`);
+                getPrintJobs(typeOfSort);
+            } else {
+                console.log(`typeOfSort = ${typeOfSort} & NO call to database`);
+            }
+        }
+
+        // Gets the print job data from the server
         function getPrintJobs(type) {
-            var serverData;
+            // Store sort method in sessionStorage in case of reload
+            sessionStorage.setItem("typeOfSort", type);
+
+            // Generate url for the type of sort of print jobs
             var url = "/sortPrintJobs?sortType=" + type;
 
             console.log("URL: " + url);
@@ -77,10 +101,9 @@
             };
             xhttp.open("get", url, true)
             xhttp.send();
-
-
         }
 
+        // Displays the print jobs in a table that is color coded by status
         function renderPrintJobs(data) {
             var myTable = document.getElementById("printTable");
             var numItems;
@@ -97,7 +120,7 @@
                 <th>Google Drive URL</th>
                 <th>Job Status</th>
                 <th>Update Date</th>
-                <th>Error Message (if needed)</th>
+                <th>Error Message</th>
             </tr>`;
 
             for (var i = 0; i < data.length; i++) {
@@ -198,17 +221,17 @@
             }
         }
 
+        // Brings up a modal to update the status of the print job
         function updateStatus(i) {
             // Get the modal
             var modal = document.getElementById("myModal");
 
-
+            console.log("i = " + i);
 
             // Get the <span> element that closes the modal
             var span = document.getElementsByClassName("close")[0];
 
             modal.style.display = "block";
-
 
             // When the user clicks on <span> (x), close the modal
             span.onclick = function () {
@@ -221,14 +244,57 @@
                     modal.style.display = "none";
                 }
             }
+
+            // Get the jobid for the line that is having the job status updated in
+            console.log(`i = ${i}`);
+            updateID = serverData[i].jobid;
         }
 
-        function sendUpdate() {
-            // AJAX request to update the status of the selected print job
-            alert("AJAX request to update status is a work in progress");
+        // Display's textarea for error only when "Problem with model" status is selected
+        function showTextBox(selectValue) {
+            if (selectValue.value == 5) {
+                document.getElementById("errorEntry").style.display = "block";
+            } else {
+                document.getElementById("errorEntry").style.display = "none";
+            }
+        }
 
-            // Close modal
+        // AJAX request to update the status of the selected print job
+        function sendUpdate() {
+            var newStatus = document.getElementById("newStatus").value;
+            var element = document.getElementById("newComment");
+            var newComment;
+
+            // Get new error message from modal if set, otherwise clear it out
+            if (element.value !== " ") {
+                newComment = document.getElementById("newComment").value;
+            } else {
+                newComment = " ";
+            }
+
+            var url = `/updateStatus?updateID=${updateID}&comment=${newComment}&newStatus=${newStatus}`;
+
+            console.log("URL: " + url);
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onload = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("Got response from server: ")
+                    console.log(this.reponse);
+
+
+                } else {
+                    console.log("Server request failed")
+                }
+            };
+            xhttp.open("get", url, true)
+            xhttp.send();
+
+            // Clear comment box, close modal, and refresh page so new print status appears
+            element.value = "";
             document.getElementById("myModal").style.display = "none";
+            document.location.reload();
         }
     </script>
 </body>

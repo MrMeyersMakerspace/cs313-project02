@@ -89,3 +89,7 @@ a {
     text-decoration: none;
     cursor: pointer;
   }
+
+  #errorEntry {
+      display: none;
+  }
