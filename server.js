@@ -173,7 +173,7 @@ function updateStatus(request, response) {
         });
     }
 
-    // Redirect back to admin page
+    // Redirect and refresh admin page
     response.redirect("/admin");
 }
 

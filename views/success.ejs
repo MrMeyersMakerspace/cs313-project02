@@ -11,10 +11,17 @@
 
 <body>
     <h2 style="color: #ed6c21; text-align: center;">Print Job Submitted Successfully!</h2>
-    <p style="color: #ed6c21; text-align: center;">Click the link below to head back home</p>
+    <p style="color: #ed6c21; text-align: center;">You will be redirected back home momentarily...</p>
+    <p style="color: #ed6c21; text-align: center;">If the redirect fails you can click the link below to return home</p>
     <div style="text-align: center; margin: 0 auto;">
         <a href="/">Home</a>
     </div>
+
+    <script>
+        setTimeout(function () {
+            window.location.href = '/';
+        }, 2000);
+    </script>
 </body>
 
 </html>
