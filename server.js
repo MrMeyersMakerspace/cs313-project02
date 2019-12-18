@@ -43,6 +43,9 @@ app.get("/getPrintJob/:jobid", getPrintJob);
 // Gets all print jobs sorted in a specified order
 app.get("/sortPrintJobs", sortPrintJobs);
 
+// Finds all print jobs from a user with a specific name
+app.get("/findPrintJobs", findPrintJobs);
+
 app.listen(app.get("port"), function () {
     console.log("Now Listening for connections on port: ", app.get("port"));
 });
@@ -129,7 +132,7 @@ function verifyLogin(request, response, next) {
 //////////////////////////////////////////
 //////////////////////////////////////////
 
-// Updates the status job status on the server
+// Updates the job status on the server
 function updateStatus(request, response) {
     // Get passed jobID and error comment
     var updateID = request.query.updateID;
@@ -398,4 +401,38 @@ function getPrintJobsFromDb(sortType, callback) {
 
         callback(null, result.rows);
     });
+}
+
+// Finds and returns a print jobs for a specific name
+function findPrintJobs(request, response) {
+    var firstname = request.query.name;
+    console.log("findPrintJobs called with name ", firstname);
+ 
+    var sql =
+        `SELECT *
+    FROM project02.printJob pj
+    JOIN project02.color c ON pj.colorID = c.colorID
+    JOIN project02.jobStatus js ON pj.statusID = js.statusID
+    JOIN project02.modelSource ms ON pj.sourceID = ms.sourceID
+    JOIN project02.printMaterial pm ON pj.materialID = pm.materialID
+    JOIN project02.printUse pu ON pj.useID = pu.useID
+    WHERE firstname = '${firstname}'`;
+
+    console.log(sql);
+
+    var params = [];
+
+    pool.query(sql, params, function (error, result) {
+        if (error) {
+            console.log("An error with the DB occurred");
+            console.log(error);
+            callback(error, null);
+        }
+
+        console.log("Found DB result: " + JSON.stringify(result.rows));
+
+        response.json(result.rows);
+    });
+    
+    
 }

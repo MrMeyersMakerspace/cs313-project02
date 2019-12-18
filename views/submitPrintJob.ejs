@@ -11,7 +11,7 @@
 
 <body onload="startFill()">
     <h1 style="color: #ed6c21;">ThinkLab 3D Print Job Submission Page</h1>
-    <p style="color: #ed6c21;">Please upload your file to your Google Drive and then fill out the form below to submit
+    <p style="color: #ed6c21;">Please upload your file to your Google Drive, get the link to share the file, and then fill out the form below to submit
         your model for 3D printing by Maker Meyers.</p>
     <hr>
     <form method="post" id="printJobForm" name="printJobForm" action="/submitPrintJob">
@@ -60,9 +60,8 @@
     <br>
 
     <h2 style="color: #ed6c21;">Check Print Status</h2>
-    <p style="color: #ed6c21;">To check the status of your 3D print click on one of the buttons below to view current print jobs. They are color
-        coded by status. White means it is submitted, light yellow is sliced, yellow is currently printing, green means
-        print is complete, and red means there is some sort of error (check the error message).</p>
+    <p style="color: #ed6c21;">To check the status of your 3D print click on one of the buttons below to view current print jobs. You can also type your first name into the box and search based off your first name. Be aware that the spelling must exactly match what was originally entered.</p>
+<p style="color: #ed6c21;">The print jobs are color coded by status. <span style="background-color:white; color: black;"> White </span> means it is submitted, <span style="background-color: lightyellow; color: black;"> light yellow </span> is sliced, <span style="background-color: yellow; color: black;"> yellow </span> is currently printing, <span style="background-color: green; color: black;"> green </span> means the print is complete, and <span style="background-color: red; color: black;"> red </span> means there is some sort of error that prevents the model from being printed (check the error message).</p>
     <div id="sortButtons">
         <button type="button" onclick="getPrintJobs('first')">Sort By First Name</button>
         <button type="button" onclick="getPrintJobs('last')">Sort By Last Name</button>
@@ -70,10 +69,23 @@
         <button type="button" onclick="getPrintJobs('status')">Sort By Print Status</button>
     </div>
     <br>
+    <div>
+        <input type="text" id="usersName" placeholder="Enter first name to search by" size="30">
+        <button type="button" onclick="findPrintJobs()">Find Print Job Based on First Name</button>
+    </div>
+    <br>
     <br>
     <table id="printTable">
 
     </table>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a href="/admin">Admin Page</a>
 
     <script>
         function getPrintJobs(type) {
@@ -220,24 +232,7 @@
                 }
             }
         }
-    </script>
 
-
-
-
-
-
-
-
-
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <a href="/admin">Admin Page</a>
-    <script>
         // Calls all required functions to fill data
         function startFill() {
             getServerValues('source');
@@ -308,6 +303,34 @@
 
             // add opt to end of select box (sel)
             sel.appendChild(opt);
+        }
+
+        function findPrintJobs() {
+            var serverData;
+            var name = document.getElementById("usersName").value;
+
+            var url = "/findPrintJobs?name=" + name;
+
+            console.log("URL: " + url);
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onload = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("Got response from server: ")
+                    console.log(this.reponse);
+
+                    serverData = JSON.parse(this.responseText);
+
+                    console.log(serverData);
+
+                    renderPrintJobs(serverData);
+                } else {
+                    console.log("Server request failed")
+                }
+            };
+            xhttp.open("get", url, true)
+            xhttp.send();
         }
     </script>
 
